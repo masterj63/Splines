@@ -9,7 +9,7 @@ class Function {
     private Function() {
     }
 
-    final double f(double x) {
+    static final double f(double x) {
         assert MIN_X <= x && x <= MAX_X;
         return Math.sin(x) + x * x / 15.0 - x;
     }
