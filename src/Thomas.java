@@ -1,5 +1,5 @@
 class Thomas {
-    private static double[] solve(double[] diagBot, double[] diagMid, double[] diagTop, double[] vals) {
+    static double[] solve(double[] diagBot, double[] diagMid, double[] diagTop, double[] vals) {
         int n = diagBot.length - 1;
 
         double[] p = new double[1 + n];
