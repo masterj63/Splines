@@ -10,12 +10,12 @@ class Spline {
     private final double[] cs;
     private final double[] ds;
 
-    Spline(List<Integer> points) {
+    Spline(List<Integer> points, Coordinates COORDS) {
         int n = points.size();
 
         xs = new double[n];
         for (int i = 0; i < n; i++)
-            xs[i] = points.get(i);
+            xs[i] = COORDS.xFrameToPlot(points.get(i));
 
         hs = new double[n];
         for (int i = 1; i < n; i++)
@@ -25,6 +25,7 @@ class Spline {
         for (int i = 0; i < n; i++)
             fs[i] = Function.f(xs[i]);
 
+        cs = new double[n];
         {
             double[] thomasVals = new double[n - 2];
             for (int i = 0; i < thomasVals.length; i++) {
@@ -45,7 +46,9 @@ class Spline {
             for (int i = 0; i < thomasTop.length - 1; i++)
                 thomasTop[i] = hs[2 + i];
 
-            cs = Thomas.solve(thomasBot, thomasMid, thomasTop, thomasVals);
+            double[] solution = Thomas.solve(thomasBot, thomasMid, thomasTop, thomasVals);
+            for (int i = 0; i < solution.length; i++)
+                cs[1 + i] = solution[i];
         }
 
         as = new double[n];
@@ -67,7 +70,7 @@ class Spline {
     double approximate(double plotX) {
         int ind = -42;
 
-        if (plotX <= xs[0])
+        if (plotX <= xs[1])
             ind = 1;
         else if (xs[xs.length - 1] <= plotX)
             ind = xs.length - 1;
